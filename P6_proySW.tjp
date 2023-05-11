@@ -309,7 +309,7 @@ textreport frame "" {
   }
 }
 
-# A traditional Gantt chart with a project overview.
+# A traditional Gantt chart with a project overview. 
 taskreport overview "" {
   scenarios actual
   headline "Current Project Plan"
