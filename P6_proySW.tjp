@@ -179,8 +179,7 @@ task WMGame "Web & Mobile Game" {
 
   task Desp "Project Despliegue" {
     allocate boss
-    depends WMGame.tMovilF
-    depends WMGame.twebF
+    depends tback
     task DespE "Despliegue Evaluacion" {
       effort 1d
       allocate patri
@@ -201,11 +200,11 @@ task WMGame "Web & Mobile Game" {
       allocate boss
       allocate dev2
       actual:effort 15d
-      start 2023-07-15
+      start 2023-06-01
       journalentry 2023-07-16 "Problems with the planned dates" {
         author boss
         alert red
-        summary "The whole team asiigned to this task has a trip to visit a new client from May 7th to May 12th. Needed to check if the project can be finished on time or it is necessary to reasign efforts."
+        summary "The whole team asigned to this task has a trip to visit a new client from May 7th to May 12th. Needed to check if the project can be finished on time or it is necessary to reasign efforts."
       }
       depends WMGame.twebF
       depends WMGame.tback
