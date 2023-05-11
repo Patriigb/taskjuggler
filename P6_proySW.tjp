@@ -185,13 +185,14 @@ task WMGame "Web & Mobile Game" {
       allocate patri
     }
     task DespD "Despliegue Decision" {
-      effort 3d
-      allocate patri
-    }
-    task DespEj "Despliegue Ejecucion" {
       effort 2d
       allocate patri
       depends WMGame.Desp.DespE
+    }
+    task DespEj "Despliegue Ejecucion" {
+      effort 3d
+      allocate patri
+      depends WMGame.Desp.DespD
     }
   }
 
