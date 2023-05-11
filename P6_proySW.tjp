@@ -5,7 +5,7 @@
  * some elements of it
  */
 
-project pSix "Web Game"  2023-03-15 +2.5m {
+project pSix "Web Game"  2023-05-04 +3m {
   # Set the default time zone for the project. If not specified, UTC
   # is used.
   timezone "Europe/Paris"
@@ -19,7 +19,7 @@ project pSix "Web Game"  2023-03-15 +2.5m {
   # the project reports. If not specified, the current day will be
   # used, but this will likely be outside of the project range, so it
   # can't be seen in the reports.
-  now 2023-04-15-13:00
+  now 2023-05-04-12:00
   # The currency for all money values is the US Dollar.
   currency "EUR"
 
@@ -67,6 +67,10 @@ resource dev2 "Samantha Müller" {
 resource dev3 "Peter Green" {
   email "kkk@unizar.es"
 }
+resource patri "Patricia Garcia" {
+  email "825907@unizar.es"
+  workinghours mon - sun 10:00 - 14:00
+}
 
 # Now we specify the work packages. The whole project is described as
 # a task that contains subtasks. These subtasks are then broken down
@@ -104,9 +108,9 @@ task WMGame "Web & Mobile Game" {
     task tlogic "Game logic" {
       effort 12d
       actual:effort 11d
-      allocate dev1, dev2
+      allocate dev1, dev2, patri
       depends WMGame.tback.tBEd
-      journalentry 2023-03-28 "Game logic completed before deadline" {
+      journalentry 2023-05-11 "Game logic completed before deadline" {
         author boss
         alert green
         summary "The team has ended the game logic before deadline."
@@ -114,7 +118,7 @@ task WMGame "Web & Mobile Game" {
     }
     task tbackDev "Back development" {
       effort 20d
-      allocate dev1, dev2
+      allocate dev1, dev2, patri
       depends WMGame.tback.tlogic
     }
   }
@@ -128,7 +132,7 @@ task WMGame "Web & Mobile Game" {
       effort 9d
       actual:effort 15d
       allocate dev3
-      journalentry 2023-04-11 "Problems with the GUI design tool" {
+      journalentry 2023-05-16 "Problems with the GUI design tool" {
         author dev3
         alert yellow
         summary "The tool used for the GUI design has given me a lot of problems. I recommend to look for other one."
@@ -146,20 +150,68 @@ task WMGame "Web & Mobile Game" {
     }    
   }
 
+  task tMovilF "Movil Front End" {
+    purge chargeset
+    chargeset wFront
+    responsible dev3
+    depends WMGame.tback.tBEd
+    task tGUIm "Movil GUI Design" {
+      effort 5d
+      actual:effort 15d
+      allocate dev3
+      journalentry 2023-05-15 "Problemas con el diseño" {
+        author dev3
+        alert yellow
+        summary "El diseño es muy complicado y no se puede hacer con la herramienta que tenemos."
+      }
+    }
+    task tFEcm "Movil Front End Construction" {
+      effort 11d
+      allocate dev2, dev3
+      depends WMGame.tMovilF.tGUIm
+    }
+    task tFEtm "Movil Front End Test" {
+      effort 4d
+      allocate dev1
+      depends WMGame.tMovilF.tFEcm
+    }    
+  }
+
+  task Desp "Project Despliegue" {
+    allocate boss
+    depends WMGame.tMovilF
+    depends WMGame.twebF
+    task DespE "Despliegue Evaluacion" {
+      effort 1d
+      allocate patri
+    }
+    task DespD "Despliegue Decision" {
+      effort 2d
+      allocate patri
+    }
+    task DespEj "Despliegue Ejecucion" {
+      effort 2d
+      allocate patri
+      depends WMGame.Desp.DespE
+    }
+  }
+
   task ttest "Accpetance tests" {
       effort 10d
       allocate boss
       allocate dev2
       actual:effort 15d
-      journalentry 2023-04-13 "Problems with the planned dates" {
+      start 2023-07-15
+      journalentry 2023-07-16 "Problems with the planned dates" {
         author boss
         alert red
         summary "The whole team asiigned to this task has a trip to visit a new client from May 7th to May 12th. Needed to check if the project can be finished on time or it is necessary to reasign efforts."
       }
       depends WMGame.twebF
       depends WMGame.tback
+      depends WMGame.tMovilF
+      depends WMGame.Desp
   }
-
     
   task deliveries "Milestones" {
 
@@ -274,6 +326,21 @@ taskreport overview "" {
   caption 'All effort values are in man days.'
 }
 
+# Informe con la planificacion inicial del proyecto
+taskreport plan "Plan inicial" {
+  scenarios actual 
+  headline "Plan inicial del proyecto"
+  columns bsi { title 'WBS' },
+          name, start, end, effort, cost,
+          revenue, chart { ${TaskTip} }
+  # For this report we like to have the abbreviated weekday in front
+  # of the date. %a is the tag for this.
+  timeformat "%a %Y-%m-%d"
+  loadunit days
+  hideresource @all
+  balance cost rev
+}
+
 
 # Macro to set the background color of a cell according to the alert
 # level of the task.
@@ -356,3 +423,4 @@ resourcereport resourceGraph "" {
   hidetask ~(isleaf() & isleaf_())
   sorttasks plan.start.up
 }
+
