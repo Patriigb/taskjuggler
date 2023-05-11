@@ -280,6 +280,11 @@ textreport frame "" {
     center '<[report id="overview"]>'
   }
 
+  textreport plan "planInicial" {
+    formats html
+    center '<[report id="planInicial"]>'
+  }
+
   textreport "Status" {
     formats html
     center -8<-
@@ -326,9 +331,8 @@ taskreport overview "" {
   caption 'All effort values are in man days.'
 }
 
-# Informe con la planificacion inicial del proyecto
-taskreport plan "Plan inicial" {
-  scenarios actual 
+taskreport planInicial "" {
+  scenarios actual
   headline "Plan inicial del proyecto"
   columns bsi { title 'WBS' },
           name, start, end, effort, cost,
@@ -336,9 +340,11 @@ taskreport plan "Plan inicial" {
   # For this report we like to have the abbreviated weekday in front
   # of the date. %a is the tag for this.
   timeformat "%a %Y-%m-%d"
+  start 2023-03-15
   loadunit days
   hideresource @all
   balance cost rev
+  caption 'All effort values are in man days.'
 }
 
 
