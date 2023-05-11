@@ -179,7 +179,7 @@ task WMGame "Web & Mobile Game" {
 
   task Desp "Project Despliegue" {
     allocate boss
-    depends tback
+    depends tback.tBEd
     task DespE "Despliegue Evaluacion" {
       effort 1d
       allocate patri
