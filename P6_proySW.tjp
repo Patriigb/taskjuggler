@@ -181,11 +181,11 @@ task WMGame "Web & Mobile Game" {
     allocate boss
     depends WMGame.tback
     task DespE "Despliegue Evaluacion" {
-      effort 1d
+      effort 2d
       allocate patri
     }
     task DespD "Despliegue Decision" {
-      effort 2d
+      effort 3d
       allocate patri
     }
     task DespEj "Despliegue Ejecucion" {
